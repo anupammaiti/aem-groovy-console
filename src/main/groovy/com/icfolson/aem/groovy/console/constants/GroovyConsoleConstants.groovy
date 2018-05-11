@@ -8,9 +8,17 @@ class GroovyConsoleConstants {
 
     public static final String EXTENSION_GROOVY = ".groovy"
 
+    public static final String PARAMETER_SCRIPT_PATH = "scriptPath"
+
+    public static final String PARAMETER_SCRIPT_PATHS = "scriptPaths"
+
     public static final String PARAMETER_SCRIPT = "script"
 
-    public static final String PARAMETER_ASYNC = "async"
+    public static final String PARAMETER_USER_ID = "userId"
+
+    public static final String PARAMETER_START_DATE = "startDate"
+
+    public static final String PARAMETER_END_DATE = "endDate"
 
     public static final String PARAMETER_DATA = "data"
 

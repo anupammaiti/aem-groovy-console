@@ -10,13 +10,19 @@ The AEM Groovy Console provides an interface for running [Groovy](http://www.gro
 
 ## Requirements
 
-* AEM 6.3 running on localhost:4502
-* Versions 9.x.x and 10.x.x are compatible with AEM 6.2
-* Versions 8.x.x are compatible with AEM 6.1
-* Versions 7.x.x are compatible with AEM 6.0
-* Versions 5.x.x and 6.x.x are compatible with CQ 5.6
-* Versions 3.x.x are compatible with CQ 5.4 and 5.5
+* AEM author instance running on [localhost:4502](http://localhost:4502/)
 * [Maven](http://maven.apache.org/) 3.x
+
+## Compatibility
+
+Groovy Console Version(s) | AEM Version
+------------ | -------------
+11.x.x | 6.3
+10.x.x, 9.x.x | 6.2
+8.x.x | 6.1
+7.x.x | 6.0
+6.x.x, 5.x.x | 5.6 (CQ)
+3.x.x | 5.5, 5.4 (CQ)
 
 ## Installation
 
@@ -24,9 +30,9 @@ The AEM Groovy Console provides an interface for running [Groovy](http://www.gro
 
 2.  [Verify](http://localhost:4502/etc/groovyconsole.html) the installation.
 
-Additional build profiles may be added in the project's pom.xml to support deployment to non-localhost AEM servers.
+Additional build profiles may be added in the project's `pom.xml` to support deployment to non-localhost AEM servers.
 
-AEM 6.0 no longer allows vanity paths for pages in /etc by default.  To enable access to the Groovy Console from /groovyconsole as in previous versions, the Apache Sling Resource Resolver Factory OSGi configuration must be updated to allow vanity paths from /etc.  The Groovy Console Configuration Service can then be updated to enable the vanity path if so desired.
+AEM 6.0 no longer allows vanity paths for pages in `/etc` by default.  To enable access to the Groovy Console from `/groovyconsole` as in previous versions, the **Apache Sling Resource Resolver Factory** OSGi configuration must be updated to allow vanity paths from `/etc`.  The **Groovy Console Configuration Service** can then be updated to enable the vanity path if so desired.
 
 ## Excluding the Groovy OSGi Bundle
 
@@ -39,6 +45,31 @@ If your AEM instance has multiple applications using Groovy and the `groovy-all`
 If you are running AEM with a context path, set the Maven property `aem.context.path` during installation.
 
     mvn install -P local -Daem.context.path=/context
+
+## OSGi Configuration
+
+Navigate to the [OSGi console configuration page](http://localhost:4502/system/console/configMgr) and select the **Groovy Console Configuration Service**.
+
+Property | Description | Default Value
+------------ | ------------- | ----------
+Email Enabled? | Check to enable email notification on completion of script execution. | `false`
+Email Recipients | Email addresses to receive notification. | `[]`
+Allowed Groups | List of group names that are authorized to use the console. If empty, no authorization check is performed. | `[]`
+Vanity Path Enabled? | Enables `/groovyconsole` vanity path. **Apache Sling Resource Resolver Factory** OSGi configuration must also be updated to allow vanity paths from `/etc`. | `false`
+Audit Disabled? | Disables auditing of script execution history. | `false`
+Display All Audit Records? | If enabled, all audit records (including records for other users) will be displayed in the console history. | `false`
+
+## Batch Script Execution
+
+Saved scripts can be remotely executed by sending a POST request to the console servlet with either the `scriptPath` or `scriptPaths` query parameter.
+
+### Single Script
+
+    curl -d "scriptPath=/etc/groovyconsole/scripts/samples/JcrSearch.groovy" -X POST -u admin:admin http://localhost:4502/bin/groovyconsole/post.json
+
+### Multiple Scripts
+
+    curl -d "scriptPaths=/etc/groovyconsole/scripts/samples/JcrSearch.groovy&scriptPaths=/etc/groovyconsole/scripts/samples/FulltextQuery.groovy" -X POST -u admin:admin http://localhost:4502/bin/groovyconsole/post.json
 
 ## Extensions
 
